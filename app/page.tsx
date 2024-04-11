@@ -6,7 +6,7 @@ export default function Home() {
     // const token = cookies().get('TOKEN')
     // if (token) return redirect('/rooms')
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center p-24">
+        <main className="flex min-h-dvh flex-col items-center justify-center p-24">
             <AuthSwitcher />
         </main>
     )
