@@ -1,9 +1,13 @@
-import { Button } from '@/components/ui/button'
+import AuthSwitcher from '@/components/auth/auth-switcher'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export default function Home() {
+    // const token = cookies().get('TOKEN')
+    // if (token) return redirect('/rooms')
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-            <Button>Click me</Button>
+        <main className="flex min-h-screen flex-col items-center justify-center p-24">
+            <AuthSwitcher />
         </main>
     )
 }
