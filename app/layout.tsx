@@ -10,7 +10,10 @@ const fontSans = FontSans({
 })
 
 export const metadata: Metadata = {
-    title: 'ACA',
+    title: {
+        template: '%s | ACA',
+        default: 'Another Chat App',
+    },
     description: 'Another chat app - MERN Stack',
 }
 
