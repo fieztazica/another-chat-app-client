@@ -25,6 +25,6 @@ type Room = BaseMongooseObject & {
 
 type Message = BaseMongooseObject & {
     content: string
-    room: Room
-    author: User
+    room: Emptyable<Room>
+    author: Emptyable<User>
 }

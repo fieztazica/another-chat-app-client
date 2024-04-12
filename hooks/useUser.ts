@@ -1,19 +1,15 @@
 'use client'
 
-import { cookies } from 'next/headers'
-import React, { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 function useUser() {
-    const token = cookies().get('TOKEN')
-    const [user, setUser] = useState<Nullable<User>>(null)
-
-    useEffect(() => {
-        return () => {
-            setUser(null)
-        }
-    }, [])
-
-    return { user }
+    return useQuery<User>({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const res = await fetch('/api/users/@me').then((r) => r.json())
+            if (res.success) return res.data
+        },
+    })
 }
 
 export default useUser
