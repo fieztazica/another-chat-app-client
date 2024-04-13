@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { SocketEventNames } from '@/hooks/useSocket'
 import { useEffect, useRef, useState } from 'react'
 import { Socket } from 'socket.io-client'
+import dayjs from '@/lib/dayjs'
 
 type Props = {
     socket: Socket
@@ -15,11 +16,12 @@ function MessagesBox({ socket }: Props) {
 
     useEffect(() => {
         socket.on(SocketEventNames.Messages, (data, ack) => {
-            console.log(data)
+            // console.log(data)
             setMessages((state) => [...state, data])
         })
 
         socket.on(SocketEventNames.Connected, (data, ack) => {
+            console.log(data)
             setMessages(new Array(...data.last100Messages))
         })
     }, [socket])
@@ -30,7 +32,7 @@ function MessagesBox({ socket }: Props) {
             lastMessageRef.current.scrollIntoView({
                 behavior: 'auto',
                 block: 'end',
-                inline: 'end'
+                inline: 'end',
             })
         }
     }, [messages])
@@ -44,14 +46,19 @@ function MessagesBox({ socket }: Props) {
                             ref={i == a.length - 1 ? lastMessageRef : undefined}
                             key={`message_${m?._id || i}`}
                         >
-                            <div className="hover:bg-slate-200 px-2 py-1">
-                                <div className="font-semibold text-muted-foreground">
-                                    {m.author?.username || 'ACA Bot'}
-                                    {!m.author && (
-                                        <span className="ml-2">
-                                            <Badge>System</Badge>
-                                        </span>
-                                    )}
+                            <div className="hover:bg-slate-100 px-2 py-1">
+                                <div className="flex items-end space-x-2">
+                                    <div className="font-semibold text-muted-foreground">
+                                        {m.author?.username || 'ACA Bot'}
+                                        {!m.author && (
+                                            <span className="ml-2">
+                                                <Badge>System</Badge>
+                                            </span>
+                                        )}
+                                    </div>
+                                    <span className="text-sm text-muted-foreground">
+                                        {dayjs(m.updatedAt).fromNow()}
+                                    </span>
                                 </div>
                                 <p>{m.content}</p>
                             </div>

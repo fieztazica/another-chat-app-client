@@ -10,7 +10,7 @@ function UserBox() {
     const { data: user } = useUser()
 
     return (
-        <div className="flex items-center justify-between pb-2 border-b w-full">
+        <div className="flex items-center justify-between pb-2 border-b w-full flex-wrap">
             <p className="text-lg font-semibold flex-1">
                 {user && `Welcome, ${user.username}`}
             </p>

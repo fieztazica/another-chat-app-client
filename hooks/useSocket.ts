@@ -6,8 +6,7 @@ import { io } from 'socket.io-client'
 function useSocket(webSocketURI: string) {
     const [socket, setSocket] = useState(() =>
         io(webSocketURI, {
-            withCredentials: true,
-            forceNew: true,
+            withCredentials: true
         })
     )
 
@@ -55,4 +54,5 @@ export enum SocketEventNames {
     Error = 'error',
     SendIndicator = 'send_indicator',
     Indicator = 'indicator',
+    Presence = 'presence',
 }

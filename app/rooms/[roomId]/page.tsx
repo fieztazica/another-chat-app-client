@@ -1,46 +1,47 @@
-'use client'
+import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import Room from './room'
 
-import useSocket, { SocketEventNames } from '@/hooks/useSocket'
-import React, { useEffect, useState } from 'react'
-import MessagesBox from './messagesBox'
-import ChatInput from './chatInput'
-
-function Room({ params }: { params: { roomId: string } }) {
-    const [roomData, setRoomData] = useState<Room>()
-
-    const { isConnected, socket, transport } = useSocket(
-        `http://localhost:5000/rooms/${params.roomId}`
-    )
-
-    useEffect(() => {
-        socket.on(SocketEventNames.Connected, (data, ack) => {
-            console.log(data)
-            setRoomData(data.room)
-            document.title = data.room.name
-        })
-    }, [socket])
-
-    if (!isConnected) {
-        return (
-            <main className="flex justify-center items-center h-full">
-                Room is either connecting or does not exist...
-            </main>
-        )
-    }
-
-    return (
-        <main className="flex flex-col shrink-0 h-full">
-            <div className="flex items-center justify-between border-b px-4 py-2">
-                <div>Room ID: {roomData?.roomId}</div>
-                <div>{roomData?.name}</div>
-                <div>Owner: {roomData?.owner.username}</div>
-            </div>
-            <div className='flex-1 h-full overflow-y-auto'>
-                <MessagesBox socket={socket} />
-            </div>
-            <ChatInput socket={socket} />
-        </main>
-    )
+type Props = {
+    params: { roomId: string }
+    searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export default Room
+async function getData(roomId: string) {
+    const token = cookies().get('TOKEN')
+    if (!token) {
+        throw new Error('Unauthorized')
+    }
+    const url = new URL(`/api/rooms/${roomId}`, process.env.BACKEND_URL)
+    const res = await fetch(url, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token.value}`,
+        },
+    })
+
+    if (!res.ok) {
+        throw new Error('Failed to fetch data')
+    }
+
+    const body = await res.json()
+    if (!body.success) {
+        throw new Error(body.data)
+    }
+
+    return body.data as Room
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const data = await getData(params.roomId)
+    return {
+        title: data.name,
+    }
+}
+
+async function RoomPage({ params }: Props) {
+    const data = await getData(params.roomId)
+    return <Room room={data} />
+}
+
+export default RoomPage

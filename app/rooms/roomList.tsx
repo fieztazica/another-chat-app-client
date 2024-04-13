@@ -1,30 +1,21 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import useRooms from '@/hooks/useRooms'
-import useUser from '@/hooks/useUser'
+import useMyRooms from '@/hooks/useMyRooms'
 import { Loader } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect } from 'react'
 
 function RoomList() {
-    const { data: me } = useUser()
-    const { data: rooms, isFetching, refetch } = useRooms(`owner=${me?._id}`)
-
-    useEffect(() => {
-        refetch()
-    }, [me, refetch])
+    const { data: rooms, isFetching } = useMyRooms()
 
     return (
         <div className="flex flex-col space-y-2">
-            <h3 className="flex items-center underline font-semibold text-xl mt-2">
-                Rooms{' '}
-                {isFetching ? (
-                    <Loader className="ml-2 animate-spin" />
-                ) : (
-                    rooms.length
-                )}
-            </h3>
+            <Link href="/rooms">
+                <h3 className="flex justify-between items-center underline font-semibold text-xl mt-2">
+                    <span>Rooms {rooms.length}</span>
+                    {isFetching && <Loader className="ml-2 animate-spin" />}
+                </h3>
+            </Link>
             {rooms.length > 0 &&
                 rooms.map((r) => {
                     return (

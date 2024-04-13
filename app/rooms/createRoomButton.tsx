@@ -13,15 +13,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useCreateRoom from '@/hooks/useCreateRoom'
-import useRooms from '@/hooks/useRooms'
-import useUser from '@/hooks/useUser'
+import useMyRooms from '@/hooks/useMyRooms'
 import { Loader, Plus } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { redirect } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 function CreateRoomButton() {
-    const {} = useUser()
-    const { refetch } = useRooms()
+    const { refetch } = useMyRooms()
     const {
         mutate: createRoom,
         data,
