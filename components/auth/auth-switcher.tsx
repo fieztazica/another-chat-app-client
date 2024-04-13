@@ -11,6 +11,8 @@ import {
     CardHeader,
     CardTitle,
 } from '../ui/card'
+import Link from 'next/link'
+import { Button } from '../ui/button'
 
 function AuthSwitcher() {
     const [isLogin, setIsLogin] = useState(true)
@@ -27,18 +29,23 @@ function AuthSwitcher() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {isLogin ? <SignInForm /> : <SignUpForm />}
+                    <div className='flex items-center justify-center'>{isLogin ? <SignInForm /> : <SignUpForm />}</div>
                 </CardContent>
                 <CardFooter>
-                    <div className="flex items-center space-x-2">
-                        <span
-                            className="hover:underline cursor-pointer"
+                    <div className="flex items-center">
+                        <Button
                             onClick={() => setIsLogin((r) => !r)}
+                            variant={'link'}
                         >
                             {isLogin
-                                ? "Don't have an account? Register now!"
+                                ? "Don't have an account?"
                                 : 'Already have one?'}
-                        </span>
+                        </Button>
+                        <Button asChild variant={'link'}>
+                            <Link href="/forgot-password">
+                                Forgot your password?
+                            </Link>
+                        </Button>
                     </div>
                 </CardFooter>
             </Card>

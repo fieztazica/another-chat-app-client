@@ -1,17 +1,13 @@
 'use client'
 
 import { useQuery } from '@tanstack/react-query'
-import useUser from './useUser'
 
-function useRooms() {
-    const { data } = useUser()
-
+function useRooms(query: string = '') {
     return useQuery<Room[]>({
         queryKey: ['rooms'],
         queryFn: async () => {
-            const res = await fetch(`/api/rooms?owner=${data?._id}`).then((r) =>
-                r.json()
-            )
+            if (!query) return []
+            const res = await fetch(`/api/rooms?${query}`).then((r) => r.json())
             if (res.success) return res.data
             return []
         },

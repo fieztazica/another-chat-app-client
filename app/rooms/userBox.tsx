@@ -1,7 +1,9 @@
 'use client'
 
 import LogoutButton from '@/components/auth/logout'
+import { Button } from '@/components/ui/button'
 import useUser from '@/hooks/useUser'
+import Link from 'next/link'
 import React from 'react'
 
 function UserBox() {
@@ -12,6 +14,9 @@ function UserBox() {
             <p className="text-lg font-semibold flex-1">
                 {user && `Welcome, ${user.username}`}
             </p>
+            <Button asChild variant="link">
+                <Link href="/change-password">Change Password</Link>
+            </Button>
             <LogoutButton variant="ghost" />
         </div>
     )

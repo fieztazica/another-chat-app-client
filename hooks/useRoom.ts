@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 
-function useRooms(roomId: string) {
+function useRoom(roomId: string) {
     return useQuery<Room>({
         queryKey: [`rooms/${roomId}`],
         queryFn: async () => {
@@ -14,4 +14,4 @@ function useRooms(roomId: string) {
     })
 }
 
-export default useRooms
+export default useRoom

@@ -10,7 +10,7 @@ import RoomInput from './roomInput'
 
 function RoomLayout({ children }: PropsWithChildren) {
     return (
-        <ResizablePanelGroup className="min-h-dvh" direction="horizontal">
+        <ResizablePanelGroup className="min-h-dvh max-h-dvh" direction="horizontal">
             <ResizablePanel defaultSize={25}>
                 <div className="flex flex-col p-2">
                     <UserBox />

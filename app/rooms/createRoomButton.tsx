@@ -12,11 +12,42 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import useCreateRoom from '@/hooks/useCreateRoom'
+import useRooms from '@/hooks/useRooms'
 import useUser from '@/hooks/useUser'
-import { Plus } from 'lucide-react'
+import { Loader, Plus } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { redirect } from 'next/navigation'
 
 function CreateRoomButton() {
     const {} = useUser()
+    const { refetch } = useRooms()
+    const {
+        mutate: createRoom,
+        data,
+        error,
+        isPending,
+        isError,
+        isSuccess,
+    } = useCreateRoom()
+    const [roomName, setRoomName] = useState('')
+
+    useEffect(() => {
+        if (data) {
+            redirect(`/rooms/${data.roomId}`)
+        }
+    }, [data])
+
+    useEffect(() => {
+        if (isSuccess) {
+            refetch()
+        }
+    }, [isSuccess, refetch])
+
+    function onCreateRoom() {
+        createRoom({ name: roomName })
+        return false
+    }
 
     return (
         <Dialog>
@@ -39,13 +70,21 @@ function CreateRoomButton() {
                         </Label>
                         <Input
                             id="name"
-                            defaultValue="Pedro Duarte"
+                            defaultValue="funny story"
                             className="col-span-3"
+                            value={roomName}
+                            onChange={(e) => setRoomName(e.target.value)}
                         />
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                    <Button onClick={onCreateRoom}>
+                        {isPending ? (
+                            <Loader className="ml-2 animate-spin" />
+                        ) : (
+                            'Create'
+                        )}
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

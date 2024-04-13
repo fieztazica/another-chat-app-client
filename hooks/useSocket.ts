@@ -7,8 +7,10 @@ function useSocket(webSocketURI: string) {
     const [socket, setSocket] = useState(() =>
         io(webSocketURI, {
             withCredentials: true,
+            forceNew: true,
         })
     )
+
     const [isConnected, setIsConnected] = useState(false)
     const [transport, setTransport] = useState('N/A')
 
@@ -51,4 +53,6 @@ export enum SocketEventNames {
     JoinRoom = 'join_room',
     Connected = 'connected',
     Error = 'error',
+    SendIndicator = 'send_indicator',
+    Indicator = 'indicator',
 }

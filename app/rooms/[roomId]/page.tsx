@@ -3,6 +3,7 @@
 import useSocket, { SocketEventNames } from '@/hooks/useSocket'
 import React, { useEffect, useState } from 'react'
 import MessagesBox from './messagesBox'
+import ChatInput from './chatInput'
 
 function Room({ params }: { params: { roomId: string } }) {
     const [roomData, setRoomData] = useState<Room>()
@@ -14,8 +15,8 @@ function Room({ params }: { params: { roomId: string } }) {
     useEffect(() => {
         socket.on(SocketEventNames.Connected, (data, ack) => {
             console.log(data)
-            setRoomData(data)
-            document.title = data.name
+            setRoomData(data.room)
+            document.title = data.room.name
         })
     }, [socket])
 
@@ -28,13 +29,16 @@ function Room({ params }: { params: { roomId: string } }) {
     }
 
     return (
-        <main className="h-full">
+        <main className="flex flex-col shrink-0 h-full">
             <div className="flex items-center justify-between border-b px-4 py-2">
                 <div>Room ID: {roomData?.roomId}</div>
                 <div>{roomData?.name}</div>
                 <div>Owner: {roomData?.owner.username}</div>
             </div>
-            <MessagesBox socket={socket} />
+            <div className='flex-1 h-full overflow-y-auto'>
+                <MessagesBox socket={socket} />
+            </div>
+            <ChatInput socket={socket} />
         </main>
     )
 }

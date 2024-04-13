@@ -8,9 +8,15 @@ export const config = {
     ],
 }
 
+const publicPaths = ['/forgot-password', '/reset-password']
+
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
     const response = NextResponse.next()
+
+    if (publicPaths.includes(pathname)) {
+        return response
+    }
 
     if (!request.cookies.has('TOKEN') && pathname !== '/') {
         return NextResponse.redirect(new URL('/', request.url))
