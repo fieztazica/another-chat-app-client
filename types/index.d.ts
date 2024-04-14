@@ -21,10 +21,15 @@ type Room = BaseMongooseObject & {
     roomId: string
     owner: User
     messages: Emptyable<Message[]>
+    members: Emptyable<Member[]>
 }
 
 type Message = BaseMongooseObject & {
     content: string
     room: Emptyable<Room>
     author: Emptyable<User>
+}
+
+type Member = User & {
+    online?: boolean
 }
