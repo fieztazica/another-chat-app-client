@@ -7,28 +7,31 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components//ui/card'
-import ForgotPasswordForm from './forgotPwdForm'
+import ResetPasswordForm from './resetPwdForm'
 
-function ForgotPasswordPage() {
-  return (
-    <main className="flex min-h-dvh flex-col items-center justify-center p-24">
+type Props = {
+    params: { token: string }
+}
 
+function ResetPasswordPage({ params }: Props) {
+    return (
+        <main className="flex min-h-dvh flex-col items-center justify-center p-24">
             <Card>
                 <CardHeader>
-                    <CardTitle>Forgot password</CardTitle>
+                    <CardTitle>Reset password</CardTitle>
                     <CardDescription>
-                        {"accidentally forgot your password? Don't worry"}
+                        make a super duper safe password and remember it
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-center justify-center">
-                        <ForgotPasswordForm />
+                        <ResetPasswordForm token={params.token} />
                     </div>
                 </CardContent>
                 <CardFooter></CardFooter>
             </Card>
         </main>
-  )
+    )
 }
 
-export default ForgotPasswordPage
+export default ResetPasswordPage

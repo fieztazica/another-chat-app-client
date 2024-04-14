@@ -23,12 +23,50 @@ export const signUpSchema = z
             message: 'Password must be at least 8 characters.',
         }),
     })
-    .superRefine(({ password, confirmPassword }, ctx) => {
-        // https://stackoverflow.com/a/73697538/14660191
-        if (confirmPassword !== password) {
-            ctx.addIssue({
-                code: 'custom',
-                message: 'The passwords did not match',
-            })
-        }
+    .refine(({ password, confirmPassword }) => confirmPassword === password, {
+        message: 'Passwords did not match',
+        path: ['confirmPassword'],
+    }) // https://www.freecodecamp.org/news/react-form-validation-zod-react-hook-form/#how-to-integrate-zod-for-schema-validation
+
+export const changePasswordSchema = z
+    .object({
+        password: z.string().min(8, {
+            message: 'Password must be at least 8 characters.',
+        }),
+        newPassword: z.string().min(8, {
+            message: 'Password must be at least 8 characters.',
+        }),
+        confirmNewPassword: z.string().min(8, {
+            message: 'Password must be at least 8 characters.',
+        }),
     })
+    .refine(
+        ({ newPassword, confirmNewPassword }) =>
+            newPassword === confirmNewPassword,
+        {
+            message: 'Passwords did not match',
+            path: ['confirmNewPassword'],
+        }
+    )
+
+export const forgotPasswordSchema = z.object({
+    email: z.string().min(1, 'Email is required').email('Invalid email'),
+})
+
+export const resetPasswordSchema = z
+    .object({
+        newPassword: z.string().min(8, {
+            message: 'Password must be at least 8 characters.',
+        }),
+        confirmNewPassword: z.string().min(8, {
+            message: 'Password must be at least 8 characters.',
+        }),
+    })
+    .refine(
+        ({ newPassword, confirmNewPassword }) =>
+            newPassword === confirmNewPassword,
+        {
+            message: 'Passwords did not match',
+            path: ['confirmNewPassword'],
+        }
+    )
