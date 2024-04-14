@@ -13,8 +13,8 @@ const publicPaths = ['/forgot-password', '/reset-password']
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
     const response = NextResponse.next()
+    
     if (publicPaths.some((path) => pathname.includes(path))) {
-        console.log(pathname)
         return response
     }
 
