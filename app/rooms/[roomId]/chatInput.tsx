@@ -34,10 +34,13 @@ function ChatInput({ socket }: Props) {
     return (
         <div className="p-2">
             <div>
-                {filteredIndicators.length > 0 &&
-                    `${filteredIndicators.join(', ')} ${
-                        filteredIndicators.length > 1 ? 'are' : 'is'
-                    } typing...`}
+                {filteredIndicators.length > 0 && (
+                    <span className="text-muted-background italic animate-pulse">
+                        {`${filteredIndicators.join(', ')} ${
+                            filteredIndicators.length > 1 ? 'are' : 'is'
+                        } typing...`}
+                    </span>
+                )}
             </div>
             <form
                 className="flex items-center space-x-2"
