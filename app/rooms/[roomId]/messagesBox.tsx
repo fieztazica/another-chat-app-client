@@ -5,6 +5,7 @@ import { SocketEventNames } from '@/hooks/useSocket'
 import { useEffect, useRef, useState } from 'react'
 import { Socket } from 'socket.io-client'
 import dayjs from '@/lib/dayjs'
+import Markdown from './Markdown'
 
 type Props = {
     socket: Socket
@@ -60,7 +61,7 @@ function MessagesBox({ socket }: Props) {
                                         {dayjs(m.updatedAt).fromNow()}
                                     </span>
                                 </div>
-                                <p>{m.content}</p>
+                                <Markdown>{m.content}</Markdown>
                             </div>
                         </li>
                     )

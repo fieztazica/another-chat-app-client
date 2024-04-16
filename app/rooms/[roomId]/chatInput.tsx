@@ -32,7 +32,7 @@ function ChatInput({ socket }: Props) {
     }
 
     return (
-        <div className="p-2">
+        <div className="p-4">
             <div>
                 {filteredIndicators.length > 0 && (
                     <span className="text-muted-background italic animate-pulse">
