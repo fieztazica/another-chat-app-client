@@ -39,7 +39,7 @@ function MessagesBox({ socket }: Props) {
 
     return (
         <ul>
-            {messages.length > 0 &&
+            {messages.length > 0 ? (
                 messages.map((m, i, a) => {
                     return (
                         <li
@@ -64,7 +64,14 @@ function MessagesBox({ socket }: Props) {
                             </div>
                         </li>
                     )
-                })}
+                })
+            ) : (
+                <div className="hover:bg-slate-100 px-2 py-1 font-semibold text-muted-foreground flex justify-center items-center">
+                    <p>
+                        {'This is the beginning of this room. Start talking!'}
+                    </p>
+                </div>
+            )}
         </ul>
     )
 }

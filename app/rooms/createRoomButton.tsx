@@ -34,18 +34,21 @@ function CreateRoomButton() {
         if (data) {
             redirect(`/rooms/${data.roomId}`)
         }
+
+        return () => {
+            setRoomName('')
+        }
     }, [data])
 
     useEffect(() => {
         if (isSuccess) {
             refetch()
         }
-    }, [isSuccess, refetch])
 
-    function onCreateRoom() {
-        createRoom({ name: roomName })
-        return false
-    }
+        return () => {
+            setRoomName('')
+        }
+    }, [isSuccess, refetch])
 
     return (
         <Dialog>
@@ -54,36 +57,45 @@ function CreateRoomButton() {
                     <Plus className="mr-2 h-4 w-4" /> Create a room
                 </Button>
             </DialogTrigger>
+
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Create a chat room</DialogTitle>
-                    <DialogDescription>
-                        Start to manage your own chat room.
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Name
-                        </Label>
-                        <Input
-                            id="name"
-                            defaultValue="funny story"
-                            className="col-span-3"
-                            value={roomName}
-                            onChange={(e) => setRoomName(e.target.value)}
-                        />
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        e.currentTarget.reset()
+                        createRoom({ name: roomName })
+                    }}
+                >
+                    <DialogHeader>
+                        <DialogTitle>Create a chat room</DialogTitle>
+                        <DialogDescription>
+                            Start to manage your own chat room.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="name" className="text-right">
+                                Name
+                            </Label>
+                            <Input
+                                id="name"
+                                defaultValue="funny story"
+                                className="col-span-3"
+                                value={roomName}
+                                onChange={(e) => setRoomName(e.target.value)}
+                            />
+                        </div>
                     </div>
-                </div>
-                <DialogFooter>
-                    <Button onClick={onCreateRoom}>
-                        {isPending ? (
-                            <Loader className="ml-2 animate-spin" />
-                        ) : (
-                            'Create'
-                        )}
-                    </Button>
-                </DialogFooter>
+                    <DialogFooter>
+                        <Button type="submit">
+                            {isPending ? (
+                                <Loader className="ml-2 animate-spin" />
+                            ) : (
+                                'Create'
+                            )}
+                        </Button>
+                    </DialogFooter>
+                </form>
             </DialogContent>
         </Dialog>
     )
