@@ -17,22 +17,22 @@ function RoomList() {
 
     return (
         <div className="flex flex-col space-y-2">
-            <Link href="/rooms">
-                <h3 className="flex justify-between items-center font-semibold text-xl mt-2">
+            <h3 className="flex justify-between items-center font-semibold text-xl mt-2">
+                <Link href="/rooms">
                     <span>Rooms {rooms.length}</span>
-                    {isFetching ? (
-                        <Loader className="animate-spin" />
-                    ) : (
-                        <Button
-                            variant={'ghost'}
-                            size={'icon'}
-                            onClick={() => refetch()}
-                        >
-                            <RotateCcw className="w-4 h-4" />
-                        </Button>
-                    )}
-                </h3>
-            </Link>
+                </Link>
+                {isFetching ? (
+                    <Loader className="animate-spin" />
+                ) : (
+                    <Button
+                        variant={'ghost'}
+                        size={'icon'}
+                        onClick={() => refetch()}
+                    >
+                        <RotateCcw className="w-4 h-4" />
+                    </Button>
+                )}
+            </h3>
             {rooms.length > 0 &&
                 rooms.map((r) => {
                     return (

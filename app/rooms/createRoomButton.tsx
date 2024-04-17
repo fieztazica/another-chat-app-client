@@ -55,10 +55,9 @@ function CreateRoomButton() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="secondary">
-                    <Plus className="mr-2 h-4 w-4" /> Create a room
+                    <Plus className="mr-2 h-4 w-4" />Create a room
                 </Button>
             </DialogTrigger>
-
             <DialogContent className="sm:max-w-[425px]">
                 <form
                     onSubmit={(e) => {
