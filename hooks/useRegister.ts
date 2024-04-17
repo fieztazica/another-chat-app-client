@@ -1,0 +1,39 @@
+import { toast } from '@/components/ui/use-toast'
+import { signUpSchema } from '@/lib/zod'
+import { useMutation } from '@tanstack/react-query'
+import { z } from 'zod'
+
+function useRegister() {
+    return useMutation({
+        mutationFn: async (data: z.infer<typeof signUpSchema>) => {
+            const res = await fetch(`/api/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...data,
+                }),
+            })
+            if (!res.ok) throw new Error('Failed to register')
+            const body = await res.json()
+            if (!body.success) throw new Error(body.data)
+            return {
+                token: body.data.token as string,
+                user: body.data.user as User,
+            }
+        },
+        onSuccess(data, variables, context) {
+            toast({
+                title: 'Successfully registered',
+                description: `Welcome ${data.user.username}!`,
+            })
+
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000)
+        },
+    })
+}
+
+export default useRegister

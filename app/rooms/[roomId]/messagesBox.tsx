@@ -39,7 +39,7 @@ function MessagesBox({ socket }: Props) {
     }, [messages])
 
     return (
-        <ul>
+        <ul className='w-full text-clip text-wrap'>
             {messages.length > 0 ? (
                 messages.map((m, i, a) => {
                     return (

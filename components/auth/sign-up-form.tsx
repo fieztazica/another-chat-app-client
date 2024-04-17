@@ -1,28 +1,23 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { PropsWithChildren, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { signUpSchema } from '@/lib/zod'
-
 import { Button } from '@/components/ui/button'
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '../ui/checkbox'
-import { toast } from '../ui/use-toast'
-import { useRouter } from 'next/navigation'
+import useRegister from '@/hooks/useRegister'
+import { signUpSchema } from '@/lib/zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import LoadingButton from '../custom/LoadingButton'
 
 function SignUpForm() {
-    const router = useRouter()
     const form = useForm<z.infer<typeof signUpSchema>>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
@@ -32,40 +27,10 @@ function SignUpForm() {
             confirmPassword: '',
         },
     })
+    const { mutate, isPending } = useRegister()
 
     function onSubmit(values: z.infer<typeof signUpSchema>) {
-        fetch(`/api/auth/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ...values,
-            }),
-        })
-            .then((r) => r.json())
-            .then((r) => {
-                if (!r.success) {
-                    throw new Error(r.data)
-                }
-
-                toast({
-                    variant: 'default',
-                    title: 'Success',
-                })
-
-                router.refresh()
-            })
-            .catch((error) => {
-                form.setError('root', {
-                    message: `${error}`,
-                })
-                toast({
-                    variant: 'destructive',
-                    title: 'Something went wrong',
-                    description: `${error}`,
-                })
-            })
+        mutate(values)
     }
 
     return (
@@ -145,9 +110,14 @@ function SignUpForm() {
                     />
                 </div>
                 <div>
-                    <Button type="submit" className="w-full">
+                    <LoadingButton
+                        isLoading={isPending}
+                        loadingHolder="Signing you up"
+                        type="submit"
+                        className="w-full"
+                    >
                         Sign Up
-                    </Button>
+                    </LoadingButton>
                 </div>
             </form>
         </Form>

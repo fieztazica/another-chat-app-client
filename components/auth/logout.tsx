@@ -1,46 +1,23 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import React from 'react'
-import { toast } from '../ui/use-toast'
-import { Button, ButtonProps } from '../ui/button'
+import useLogout from '@/hooks/useLogout'
+import LoadingButton from '../custom/LoadingButton'
+import { ButtonProps } from '../ui/button'
 
 function LogoutButton({ ...props }: ButtonProps) {
-    const router = useRouter()
-
-    function onSubmit() {
-        fetch(`/api/auth/logout`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((r) => r.json())
-            .then((r) => {
-                if (!r.success) {
-                    throw new Error(r.data)
-                }
-
-                toast({
-                    variant: 'default',
-                    title: 'Success',
-                })
-
-                router.refresh()
-            })
-            .catch((error) => {
-                toast({
-                    variant: 'destructive',
-                    title: 'Something went wrong',
-                    description: `${error}`,
-                })
-            })
-    }
+    const { mutate, isPending, data } = useLogout()
 
     return (
-        <Button onClick={onSubmit} {...props}>
+        <LoadingButton
+            isLoading={isPending}
+            loadingHolder="Logging you out"
+            onClick={() => {
+                mutate()
+            }}
+            {...props}
+        >
             Logout
-        </Button>
+        </LoadingButton>
     )
 }
 

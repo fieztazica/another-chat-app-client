@@ -1,28 +1,23 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { PropsWithChildren, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { signInSchema } from '@/lib/zod'
-
-import { Button } from '@/components/ui/button'
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import useLogin from '@/hooks/useLogin'
+import { signInSchema } from '@/lib/zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import LoadingButton from '../custom/LoadingButton'
 import { Checkbox } from '../ui/checkbox'
-import { toast } from '../ui/use-toast'
-import { useRouter } from 'next/navigation'
 
 function SignInForm() {
-    const router = useRouter()
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
         defaultValues: {
@@ -31,40 +26,10 @@ function SignInForm() {
             rememberMe: false,
         },
     })
+    const { isPending, mutate } = useLogin()
 
     function onSubmit(values: z.infer<typeof signInSchema>) {
-        fetch(`/api/auth/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ...values,
-            }),
-        })
-            .then((r) => r.json())
-            .then((r) => {
-                if (!r.success) {
-                    throw new Error(r.data)
-                }
-
-                toast({
-                    variant: 'default',
-                    title: 'Success',
-                })
-
-                router.refresh()
-            })
-            .catch((error) => {
-                form.setError('root', {
-                    message: `${error}`,
-                })
-                toast({
-                    variant: 'destructive',
-                    title: 'Something went wrong',
-                    description: `${error}`,
-                })
-            })
+        mutate(values)
     }
 
     return (
@@ -128,9 +93,14 @@ function SignInForm() {
                     />
                 </div>
                 <div>
-                    <Button type="submit" className="w-full">
+                    <LoadingButton
+                        isLoading={isPending}
+                        type="submit"
+                        className="w-full"
+                        loadingHolder="Logging you in"
+                    >
                         Sign In
-                    </Button>
+                    </LoadingButton>
                 </div>
             </form>
         </Form>

@@ -1,4 +1,4 @@
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown, { type Options } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { cn } from '@/lib/utils'
 import {
@@ -6,11 +6,10 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
-import React, { PropsWithChildren } from 'react'
 import { Button } from '@/components/ui/button'
 import { PopoverClose } from '@radix-ui/react-popover'
 
-function Markdown({ children }: PropsWithChildren) {
+function Markdown({ children, ...props }: Options) {
     return (
         <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -55,8 +54,9 @@ function Markdown({ children }: PropsWithChildren) {
                     )
                 },
             }}
+            {...props}
         >
-            {`${children}`}
+            {children}
         </ReactMarkdown>
     )
 }

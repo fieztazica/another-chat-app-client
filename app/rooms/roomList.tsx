@@ -4,6 +4,13 @@ import { Button } from '@/components/ui/button'
 import useMyRooms from '@/hooks/useMyRooms'
 import { Loader, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuSeparator,
+    ContextMenuTrigger,
+} from '@/components/ui/context-menu'
 
 function RoomList() {
     const { data: rooms, isFetching, refetch } = useMyRooms()
@@ -21,7 +28,7 @@ function RoomList() {
                             size={'icon'}
                             onClick={() => refetch()}
                         >
-                            <RotateCcw className='w-4 h-4' />
+                            <RotateCcw className="w-4 h-4" />
                         </Button>
                     )}
                 </h3>
@@ -29,17 +36,23 @@ function RoomList() {
             {rooms.length > 0 &&
                 rooms.map((r) => {
                     return (
-                        <Button
-                            variant={'outline'}
-                            asChild
-                            key={`room_${r._id}`}
-                        >
-                            <Link href={`/rooms/${r.roomId}`}>
-                                <div>
-                                    {r.roomId} - {r.name}
-                                </div>
-                            </Link>
-                        </Button>
+                        <ContextMenu key={`room_${r._id}`}>
+                            <ContextMenuTrigger asChild>
+                                <Button variant={'outline'} asChild>
+                                    <Link href={`/rooms/${r.roomId}`}>
+                                        <div>
+                                            {r.roomId} - {r.name}
+                                        </div>
+                                    </Link>
+                                </Button>
+                            </ContextMenuTrigger>
+                            <ContextMenuContent>
+                                <ContextMenuItem>Edit</ContextMenuItem>
+                                <ContextMenuItem>Delete</ContextMenuItem>
+                                <ContextMenuSeparator />
+                                <ContextMenuItem>Copy room ID</ContextMenuItem>
+                            </ContextMenuContent>
+                        </ContextMenu>
                     )
                 })}
         </div>

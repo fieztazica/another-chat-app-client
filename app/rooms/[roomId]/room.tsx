@@ -34,7 +34,7 @@ function Room({ room }: { room: Room }) {
                         </h4>
                         <div>Owner: {room.owner.username}</div>
                     </div>
-                    <div className="flex-1 h-full overflow-y-auto">
+                    <div className="flex-1 h-full w-full overflow-y-auto">
                         <MessagesBox socket={socket} />
                     </div>
                     <ChatInput socket={socket} />
