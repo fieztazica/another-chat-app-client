@@ -11,10 +11,17 @@ import {
     ContextMenuSeparator,
     ContextMenuTrigger,
 } from '@/components/ui/context-menu'
-
+import useDeleteRoom from '@/hooks/useDeleteRoom'
 function RoomList() {
     const { data: rooms, isFetching, refetch } = useMyRooms()
-
+    const {
+        mutate: deleteRoom,
+        data,
+        error,
+        isPending,
+        isError,
+        isSuccess,
+    } = useDeleteRoom()
     return (
         <div className="flex flex-col space-y-2">
             <h3 className="flex justify-between items-center font-semibold text-xl mt-2">
@@ -48,7 +55,11 @@ function RoomList() {
                             </ContextMenuTrigger>
                             <ContextMenuContent>
                                 <ContextMenuItem>Edit</ContextMenuItem>
-                                <ContextMenuItem>Delete</ContextMenuItem>
+                                <ContextMenuItem onClick={(e) => {
+                                    e.preventDefault()
+                                    deleteRoom({ id: r._id })
+                                    refetch()
+                                }}>Delete</ContextMenuItem>
                                 <ContextMenuSeparator />
                                 <ContextMenuItem>Copy room ID</ContextMenuItem>
                             </ContextMenuContent>
