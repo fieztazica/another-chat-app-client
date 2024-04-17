@@ -9,8 +9,10 @@ import {
     ResizableHandle,
 } from '@/components/ui/resizable'
 import RoomSettings from './roomSettings'
+import UpdateRoomButton from '../editRoomButton'
 
 function Room({ room }: { room: Room }) {
+
     const { isConnected, socket } = useSocket(
         `http://localhost:5000/rooms/${room.roomId}`
     )
@@ -32,6 +34,7 @@ function Room({ room }: { room: Room }) {
                         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
                             {room.name}
                         </h4>
+                        <UpdateRoomButton roomId={room._id} initialRoomName={room.name}/>
                         <div>Owner: {room.owner.username}</div>
                     </div>
                     <div className="flex-1 h-full w-full overflow-y-auto">
