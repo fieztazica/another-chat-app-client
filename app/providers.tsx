@@ -7,6 +7,7 @@ import {
     MutationCache,
 } from '@tanstack/react-query'
 import { toast } from '@/components/ui/use-toast'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 function Providers({ children }: PropsWithChildren) {
     const [client] = React.useState(
@@ -25,7 +26,11 @@ function Providers({ children }: PropsWithChildren) {
         })
     )
 
-    return <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    return (
+        <QueryClientProvider client={client}>
+            <TooltipProvider>{children}</TooltipProvider>
+        </QueryClientProvider>
+    )
 }
 
 export default Providers
