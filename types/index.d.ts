@@ -24,6 +24,10 @@ type Room = BaseMongooseObject & {
     members: Emptyable<Member[]>
 }
 
+type SocketRoom = Room & {
+    socketUrl: string
+}
+
 type Message = BaseMongooseObject & {
     content: string
     room: Emptyable<Room>

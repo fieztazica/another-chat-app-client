@@ -1,9 +1,7 @@
 'use client'
 
+import Copy from '@/components/custom/copy-to-clipboard'
 import { Button } from '@/components/ui/button'
-import useMyRooms from '@/hooks/useMyRooms'
-import { Loader, RotateCcw } from 'lucide-react'
-import Link from 'next/link'
 import {
     ContextMenu,
     ContextMenuContent,
@@ -11,10 +9,14 @@ import {
     ContextMenuSeparator,
     ContextMenuTrigger,
 } from '@/components/ui/context-menu'
+import useMyRooms from '@/hooks/useMyRooms'
+import { Loader, RotateCcw } from 'lucide-react'
+import Link from 'next/link'
+import EditRoomDialog from './editRoomDiaglog'
+import DeleteRoomButton from './deleteRoomButton'
 
 function RoomList() {
     const { data: rooms, isFetching, refetch } = useMyRooms()
-
     return (
         <div className="flex flex-col space-y-2">
             <h3 className="flex justify-between items-center font-semibold text-xl mt-2">
@@ -38,7 +40,11 @@ function RoomList() {
                     return (
                         <ContextMenu key={`room_${r._id}`}>
                             <ContextMenuTrigger asChild>
-                                <Button variant={'outline'} asChild>
+                                <Button
+                                    variant={'outline'}
+                                    className="justify-start"
+                                    asChild
+                                >
                                     <Link href={`/rooms/${r.roomId}`}>
                                         <div>
                                             {r.roomId} - {r.name}
@@ -47,10 +53,26 @@ function RoomList() {
                                 </Button>
                             </ContextMenuTrigger>
                             <ContextMenuContent>
-                                <ContextMenuItem>Edit</ContextMenuItem>
-                                <ContextMenuItem>Delete</ContextMenuItem>
+                                <ContextMenuItem asChild>
+                                    <EditRoomDialog
+                                        className="flex w-full"
+                                        room={r}
+                                    >
+                                        Edit
+                                    </EditRoomDialog>
+                                </ContextMenuItem>
+                                <ContextMenuItem>
+                                    <DeleteRoomButton roomId={r.roomId} >Delete</DeleteRoomButton>
+                                </ContextMenuItem>
                                 <ContextMenuSeparator />
-                                <ContextMenuItem>Copy room ID</ContextMenuItem>
+                                <ContextMenuItem>
+                                    <Copy
+                                        className="flex w-full"
+                                        content={r.roomId}
+                                    >
+                                        Copy room ID
+                                    </Copy>
+                                </ContextMenuItem>
                             </ContextMenuContent>
                         </ContextMenu>
                     )
