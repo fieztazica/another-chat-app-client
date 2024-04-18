@@ -12,6 +12,7 @@ import {
 import useMyRooms from '@/hooks/useMyRooms'
 import { Loader, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
+import EditRoomDialog from './editRoomDiaglog'
 
 function RoomList() {
     const { data: rooms, isFetching, refetch } = useMyRooms()
@@ -39,7 +40,11 @@ function RoomList() {
                     return (
                         <ContextMenu key={`room_${r._id}`}>
                             <ContextMenuTrigger asChild>
-                                <Button variant={'outline'} className='justify-start' asChild>
+                                <Button
+                                    variant={'outline'}
+                                    className="justify-start"
+                                    asChild
+                                >
                                     <Link href={`/rooms/${r.roomId}`}>
                                         <div>
                                             {r.roomId} - {r.name}
@@ -48,11 +53,18 @@ function RoomList() {
                                 </Button>
                             </ContextMenuTrigger>
                             <ContextMenuContent>
-                                <ContextMenuItem>Edit</ContextMenuItem>
+                                <ContextMenuItem asChild>
+                                    <EditRoomDialog
+                                        className="flex w-full"
+                                        room={r}
+                                    >
+                                        Edit
+                                    </EditRoomDialog>
+                                </ContextMenuItem>
                                 <ContextMenuItem>Delete</ContextMenuItem>
                                 <ContextMenuSeparator />
                                 <ContextMenuItem>
-                                    <Copy className="w-full" content={r.roomId}>
+                                    <Copy className="flex w-full" content={r.roomId}>
                                         Copy room ID
                                     </Copy>
                                 </ContextMenuItem>
