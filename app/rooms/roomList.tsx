@@ -11,6 +11,9 @@ import {
     ContextMenuSeparator,
     ContextMenuTrigger,
 } from '@/components/ui/context-menu'
+import { PropsWithChildren } from 'react'
+import { toast } from '@/components/ui/use-toast'
+import Copy from '@/components/custom/copy-to-clipboard'
 
 function RoomList() {
     const { data: rooms, isFetching, refetch } = useMyRooms()
@@ -38,7 +41,7 @@ function RoomList() {
                     return (
                         <ContextMenu key={`room_${r._id}`}>
                             <ContextMenuTrigger asChild>
-                                <Button variant={'outline'} asChild>
+                                <Button variant={'outline'} className='justify-start' asChild>
                                     <Link href={`/rooms/${r.roomId}`}>
                                         <div>
                                             {r.roomId} - {r.name}
@@ -50,7 +53,11 @@ function RoomList() {
                                 <ContextMenuItem>Edit</ContextMenuItem>
                                 <ContextMenuItem>Delete</ContextMenuItem>
                                 <ContextMenuSeparator />
-                                <ContextMenuItem>Copy room ID</ContextMenuItem>
+                                <ContextMenuItem>
+                                    <Copy className="w-full" content={r.roomId}>
+                                        Copy room ID
+                                    </Copy>
+                                </ContextMenuItem>
                             </ContextMenuContent>
                         </ContextMenu>
                     )
