@@ -13,10 +13,10 @@ import useMyRooms from '@/hooks/useMyRooms'
 import { Loader, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
 import EditRoomDialog from './editRoomDiaglog'
+import DeleteRoomButton from './deleteRoomButton'
 
 function RoomList() {
     const { data: rooms, isFetching, refetch } = useMyRooms()
-
     return (
         <div className="flex flex-col space-y-2">
             <h3 className="flex justify-between items-center font-semibold text-xl mt-2">
@@ -61,7 +61,7 @@ function RoomList() {
                                         Edit
                                     </EditRoomDialog>
                                 </ContextMenuItem>
-                                <ContextMenuItem>Delete</ContextMenuItem>
+                                <DeleteRoomButton roomId={r._id} />
                                 <ContextMenuSeparator />
                                 <ContextMenuItem>
                                     <Copy className="flex w-full" content={r.roomId}>
