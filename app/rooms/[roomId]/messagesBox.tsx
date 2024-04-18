@@ -47,7 +47,7 @@ function MessagesBox({ socket }: Props) {
                             ref={i == a.length - 1 ? lastMessageRef : undefined}
                             key={`message_${m?._id || i}`}
                         >
-                            <div className="hover:bg-slate-100 px-2 py-1">
+                            <div className="hover:bg-primary-foreground px-2 py-1">
                                 <div className="flex items-end space-x-2">
                                     <div className="font-semibold text-muted-foreground">
                                         {m.author?.username || 'ACA Bot'}

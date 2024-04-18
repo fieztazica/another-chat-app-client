@@ -29,7 +29,17 @@ async function getData(roomId: string) {
         throw new Error(body.data)
     }
 
-    return body.data as Room
+    const room = body.data as Room
+
+    const socketUrl = new URL(
+        `/rooms/${room.roomId}`,
+        `${process.env.BACKEND_URL}`
+    )
+
+    return {
+        ...room,
+        socketUrl: socketUrl.href,
+    } satisfies SocketRoom
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

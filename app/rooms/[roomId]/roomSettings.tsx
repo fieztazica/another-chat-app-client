@@ -10,10 +10,10 @@ type Props = {
 function RoomSettings({ room, socket }: Props) {
     return (
         <div>
-            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight p-2">
+            <h4 className="p-2 scroll-m-20 text-xl font-semibold tracking-tight">
                 {room.name}
-            </h3>
-            <Separator className="mb-2"/>
+            </h4>
+            <Separator className="mb-2" />
             <Presences room={room} socket={socket} />
         </div>
     )
