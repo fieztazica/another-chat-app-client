@@ -4,11 +4,12 @@ import { Badge } from '@/components/ui/badge'
 import {
     Tooltip,
     TooltipContent,
-    TooltipTrigger
+    TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { SocketEventNames } from '@/hooks/useSocket'
 import useUser from '@/hooks/useUser'
 import dayjs from '@/lib/dayjs'
+import { Crown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Socket } from 'socket.io-client'
 
@@ -33,30 +34,46 @@ function Presences({ socket, room }: Props) {
                 return (
                     <li
                         key={`presence_${p._id}`}
-                        className="hover:bg-slate-100 py-1 px-2"
+                        className="hover:bg-primary-foreground py-1 px-2"
                     >
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <span className="flex flex-wrap items-center space-x-2">
-                                    <span>{p.username}</span>
-                                    {p.online && (
+                        <span className="flex flex-wrap items-center space-x-2">
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <span className="font-medium text-primary">
+                                        {p.username}
+                                    </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>joined {dayjs(p.createdAt).fromNow()}</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            {p.online && (
+                                <Tooltip>
+                                    <TooltipTrigger>
                                         <span className="relative flex h-3 w-3">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                             <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                                         </span>
-                                    )}
-                                    {p._id == room.owner._id && (
-                                        <Badge variant={'outline'}>Owner</Badge>
-                                    )}
-                                    {p._id == me?._id && (
-                                        <Badge variant={'outline'}>Me</Badge>
-                                    )}
-                                </span>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>joined {dayjs(p.createdAt).fromNow()}</p>
-                            </TooltipContent>
-                        </Tooltip>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Currently online</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            )}
+                            {p._id == room.owner._id && (
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <Crown className="w-4 h-4 text-yellow-500" />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Room Owner</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            )}
+                            {p._id == me?._id && (
+                                <Badge variant={'outline'}>Me</Badge>
+                            )}
+                        </span>
                     </li>
                 )
             })}
