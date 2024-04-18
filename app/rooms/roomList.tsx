@@ -11,6 +11,7 @@ import {
     ContextMenuSeparator,
     ContextMenuTrigger,
 } from '@/components/ui/context-menu'
+import DeleteRoomButton from './deleteRoomButton'
 import useDeleteRoom from '@/hooks/useDeleteRoom'
 function RoomList() {
     const { data: rooms, isFetching, refetch } = useMyRooms()
@@ -55,11 +56,12 @@ function RoomList() {
                             </ContextMenuTrigger>
                             <ContextMenuContent>
                                 <ContextMenuItem>Edit</ContextMenuItem>
-                                <ContextMenuItem onClick={(e) => {
+                                {/* <ContextMenuItem onClick={(e) => {
                                     e.preventDefault()
                                     deleteRoom({ id: r._id })
                                     refetch()
-                                }}>Delete</ContextMenuItem>
+                                }}>Delete</ContextMenuItem> */}
+                                <DeleteRoomButton roomId={r._id} />
                                 <ContextMenuSeparator />
                                 <ContextMenuItem>Copy room ID</ContextMenuItem>
                             </ContextMenuContent>
