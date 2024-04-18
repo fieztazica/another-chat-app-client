@@ -61,10 +61,15 @@ function RoomList() {
                                         Edit
                                     </EditRoomDialog>
                                 </ContextMenuItem>
-                                <DeleteRoomButton roomId={r._id} />
+                                <ContextMenuItem>
+                                    <DeleteRoomButton roomId={r.roomId} >Delete</DeleteRoomButton>
+                                </ContextMenuItem>
                                 <ContextMenuSeparator />
                                 <ContextMenuItem>
-                                    <Copy className="flex w-full" content={r.roomId}>
+                                    <Copy
+                                        className="flex w-full"
+                                        content={r.roomId}
+                                    >
                                         Copy room ID
                                     </Copy>
                                 </ContextMenuItem>

@@ -14,7 +14,7 @@ function useUpdateRoom() {
             if (!res.ok) throw new Error('Failed to update room');
             const body = await res.json();
             if (!body.success) throw new Error(body.data);
-            return body.data;
+            return body.data as Room;
         },
     });
 }

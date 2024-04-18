@@ -1,7 +1,6 @@
 'use client'
 
 import LoadingButton from '@/components/custom/LoadingButton'
-import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogContent,
@@ -13,11 +12,11 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import React, { PropsWithChildren, useState } from 'react'
 import useUpdateRoom from '@/hooks/useEditRoom'
 import { cn } from '@/lib/utils'
+import React, { useState } from 'react'
 
-interface EditRoomDialogProps {
+type EditRoomDialogProps = {
     room: Room
 }
 
@@ -31,7 +30,6 @@ function EditRoomDialog({
         React.HTMLAttributes<HTMLDivElement>,
         HTMLDivElement
     >) {
-    const [isOpen, setIsOpen] = useState(false)
     const [roomName, setRoomName] = useState(room.name)
     const { mutate, isPending } = useUpdateRoom()
 

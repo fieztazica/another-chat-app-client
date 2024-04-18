@@ -1,15 +1,25 @@
 'use client'
-import useMyRooms from '@/hooks/useMyRooms'
-import { Loader, RotateCcw } from 'lucide-react'
-import Link from 'next/link'
-import {
-    ContextMenuItem,
-} from '@/components/ui/context-menu'
+
 import useDeleteRoom from '@/hooks/useDeleteRoom'
-interface DeleteRoomButtonProps {
-    roomId: string;
+import useMyRooms from '@/hooks/useMyRooms'
+import { cn } from '@/lib/utils'
+import { usePathname, redirect } from 'next/navigation'
+import React, { useEffect } from 'react'
+
+type DeleteRoomButtonProps = {
+    roomId: string
 }
-function deleteRoomButton({ roomId } : DeleteRoomButtonProps) {
+
+function DeleteRoomButton({
+    roomId,
+    className,
+    children,
+    ...props
+}: DeleteRoomButtonProps &
+    React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLDivElement>,
+        HTMLDivElement
+    >) {
     const { refetch } = useMyRooms()
     const {
         mutate: deleteRoom,
@@ -19,13 +29,28 @@ function deleteRoomButton({ roomId } : DeleteRoomButtonProps) {
         isError,
         isSuccess,
     } = useDeleteRoom()
-    return (
-        <ContextMenuItem onClick={(e) => {
-            e.preventDefault()
-            deleteRoom({ id: roomId })
+    const pathname = usePathname()
+
+    useEffect(() => {
+        if (data) {
             refetch()
-        }}>Delete</ContextMenuItem>
+            if (pathname.includes(roomId)) redirect('/rooms')
+        }
+    }, [data])
+
+    function onClickHandler() {
+        deleteRoom({ id: roomId })
+    }
+
+    return (
+        <div
+            className={cn('hover:cursor-pointer', className)}
+            onClick={(e) => onClickHandler()}
+            {...props}
+        >
+            {children}
+        </div>
     )
 }
 
-export default deleteRoomButton
+export default DeleteRoomButton
